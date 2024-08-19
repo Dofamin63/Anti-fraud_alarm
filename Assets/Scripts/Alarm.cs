@@ -18,8 +18,8 @@ public class Alarm : MonoBehaviour
 
     private void OnEnable()
     {
-        _door.Entered += OnChangeVolume;
-        _door.Exited += OnChangeVolume;
+        _door.Entered += TurnOnSiren;
+        _door.Exited += TurnOfSiren;
     }
 
     private void OnDisable()

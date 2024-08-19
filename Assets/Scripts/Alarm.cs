@@ -18,12 +18,14 @@ public class Alarm : MonoBehaviour
 
     private void OnEnable()
     {
-        _door.OnDetection += TurnOnSiren;
+        _door.Entered += TurnOnSiren;
+        _door.Exited += TurnOnSiren;
     }
 
     private void OnDisable()
     {
-        _door.OnDetection -= TurnOnSiren;
+        _door.Entered -= TurnOnSiren;
+        _door.Exited -= TurnOnSiren;
     }
 
     private void TurnOnSiren()

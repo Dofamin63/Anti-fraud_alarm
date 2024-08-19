@@ -5,7 +5,8 @@ public class Door : MonoBehaviour
 {
     [SerializeField] private Alarm _alarm;
 
-    public event Action OnDetection;
+    public event Action Entered;
+    public event Action Exited;
 
     private void Awake()
     {
@@ -14,19 +15,17 @@ public class Door : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        HandleTrigger(other);
+        if (other.TryGetComponent(out Enemy _))
+        {
+            Entered?.Invoke();
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        HandleTrigger(other);
-    }
-
-    private void HandleTrigger(Collider other)
-    {
         if (other.TryGetComponent(out Enemy _))
         {
-            OnDetection?.Invoke();
+            Exited?.Invoke();
         }
     }
 }

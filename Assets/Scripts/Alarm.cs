@@ -1,13 +1,13 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider))]
 [RequireComponent(typeof(AudioSource))]
 public class Alarm : MonoBehaviour
 {
     [SerializeField] private int _speedChangeVolume;
     [SerializeField] private int _minVolume;
     [SerializeField] private int _maxVolume;
+    [SerializeField] private Door _door;
     private AudioSource _audioSource;
     private Coroutine _coroutine;
 
@@ -16,30 +16,24 @@ public class Alarm : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnEnable()
     {
-        if (other.TryGetComponent(out Enemy _))
-        {
-            if (_coroutine != null)
-            {
-                StopCoroutine(_coroutine);
-            }
-
-            _coroutine = StartCoroutine(ChangeVolume());
-        }
+        _door.OnDetection += TurnOnSiren;
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnDisable()
     {
-        if (other.TryGetComponent(out Enemy _))
-        {
-            if (_coroutine != null)
-            {
-                StopCoroutine(_coroutine);
-            }
+        _door.OnDetection -= TurnOnSiren;
+    }
 
-            _coroutine = StartCoroutine(ChangeVolume());
+    private void TurnOnSiren()
+    {
+        if (_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
         }
+
+        _coroutine = StartCoroutine(ChangeVolume());
     }
 
     private IEnumerator ChangeVolume()
@@ -59,6 +53,7 @@ public class Alarm : MonoBehaviour
         while (_audioSource.volume != targetVolume)
         {
             _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, targetVolume, _speedChangeVolume * Time.deltaTime);
+            
             yield return null;
         }
     }

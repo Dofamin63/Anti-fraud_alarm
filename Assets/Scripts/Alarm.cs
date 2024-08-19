@@ -18,17 +18,29 @@ public class Alarm : MonoBehaviour
 
     private void OnEnable()
     {
-        _door.Entered += TurnOnSiren;
-        _door.Exited += TurnOnSiren;
+        _door.Entered += OnChangeVolume;
+        _door.Exited += OnChangeVolume;
     }
 
     private void OnDisable()
     {
         _door.Entered -= TurnOnSiren;
-        _door.Exited -= TurnOnSiren;
+        _door.Exited -= TurnOfSiren;
     }
 
     private void TurnOnSiren()
+    {
+        _audioSource.Play();
+        OnChangeVolume();
+    }
+    
+    private void TurnOfSiren()
+    {
+        _audioSource.Stop();
+        OnChangeVolume();
+    }
+    
+    private void OnChangeVolume()
     {
         if (_coroutine != null)
         {
@@ -41,7 +53,6 @@ public class Alarm : MonoBehaviour
     private IEnumerator ChangeVolume()
     {
         int targetVolume = _minVolume;
-        _audioSource.Play();
 
         if (_audioSource.volume == _minVolume)
         {

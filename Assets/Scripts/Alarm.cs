@@ -36,7 +36,6 @@ public class Alarm : MonoBehaviour
     
     private void TurnOfSiren()
     {
-        _audioSource.Stop();
         OnChangeVolume();
     }
     
@@ -69,5 +68,7 @@ public class Alarm : MonoBehaviour
             
             yield return null;
         }
+        
+        _audioSource.Stop();
     }
 }

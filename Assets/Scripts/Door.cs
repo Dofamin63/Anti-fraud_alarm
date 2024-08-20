@@ -4,11 +4,6 @@ public class Door : MonoBehaviour
 {
     [SerializeField] private Alarm _alarm;
 
-    private void Awake()
-    {
-        _alarm = GetComponent<Alarm>();
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out Enemy _))

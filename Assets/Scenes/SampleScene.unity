@@ -844,7 +844,6 @@ MonoBehaviour:
   _speedChangeVolume: 1
   _minVolume: 0
   _maxVolume: 1
-  _door: {fileID: 545004085}
 --- !u!82 &1008591019
 AudioSource:
   m_ObjectHideFlags: 0

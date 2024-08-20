@@ -18,12 +18,12 @@ public class Alarm : MonoBehaviour
     public void TurnOnSiren()
     {
         _audioSource.Play();
-        OnChangeVolume(_minVolume);
+        OnChangeVolume(_maxVolume);
     }
     
     public void TurnOffSiren()
     {
-        OnChangeVolume(_maxVolume);
+        OnChangeVolume(_minVolume);
     }
 
     private void OnChangeVolume(float targetVolume)

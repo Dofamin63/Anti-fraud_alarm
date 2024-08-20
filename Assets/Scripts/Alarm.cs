@@ -5,8 +5,8 @@ using UnityEngine;
 public class Alarm : MonoBehaviour
 {
     [SerializeField] private int _speedChangeVolume;
-    [SerializeField] private int _minVolume;
-    [SerializeField] private int _maxVolume;
+    [SerializeField] private float _minVolume;
+    [SerializeField] private float _maxVolume;
     private AudioSource _audioSource;
     private Coroutine _coroutine;
 
@@ -17,42 +17,33 @@ public class Alarm : MonoBehaviour
 
     public void TurnOnSiren()
     {
-        if (_coroutine != null)
-            StopCoroutine(_coroutine);
-
         _audioSource.Play();
-        _coroutine = StartCoroutine(ChangeVolumeMax());
+        OnChangeVolume(_minVolume);
     }
     
     public void TurnOffSiren()
     {
+        OnChangeVolume(_maxVolume);
+    }
+
+    private void OnChangeVolume(float targetVolume)
+    {
         if (_coroutine != null)
             StopCoroutine(_coroutine);
 
-        _coroutine = StartCoroutine(ChangeVolumeMin());
+        _coroutine = StartCoroutine(ChangeVolume(targetVolume));
     }
     
-    private IEnumerator ChangeVolumeMax()
+    private IEnumerator ChangeVolume(float targetVolume)
     {
-        _audioSource.volume = _minVolume;
+        while (enabled)
+        {
+            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, targetVolume, _speedChangeVolume * Time.deltaTime);
+            
+            yield return null;
+        }
 
-        while (_audioSource.volume < _maxVolume)
-        {
-            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, _maxVolume, _speedChangeVolume * Time.deltaTime);
-            
-            yield return null;
-        }
-    }
-    
-    private IEnumerator ChangeVolumeMin()
-    {
-        while (_audioSource.volume > _minVolume)
-        {
-            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, _minVolume, _speedChangeVolume * Time.deltaTime);
-            
-            yield return null;
-        }
-        
-        _audioSource.Stop();
+        if (Mathf.Approximately(_audioSource.volume, _minVolume))
+            _audioSource.Stop();
     }
 }

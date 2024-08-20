@@ -36,7 +36,7 @@ public class Alarm : MonoBehaviour
     
     private IEnumerator ChangeVolume(float targetVolume)
     {
-        while (enabled)
+        while (Mathf.Approximately(_audioSource.volume, targetVolume) == false)
         {
             _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, targetVolume, _speedChangeVolume * Time.deltaTime);
             

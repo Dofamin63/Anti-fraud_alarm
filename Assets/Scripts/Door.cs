@@ -1,12 +1,8 @@
-using System;
 using UnityEngine;
 
 public class Door : MonoBehaviour
 {
     [SerializeField] private Alarm _alarm;
-
-    public event Action Entered;
-    public event Action Exited;
 
     private void Awake()
     {
@@ -17,7 +13,7 @@ public class Door : MonoBehaviour
     {
         if (other.TryGetComponent(out Enemy _))
         {
-            Entered?.Invoke();
+            _alarm.TurnOnSiren();
         }
     }
 
@@ -25,7 +21,7 @@ public class Door : MonoBehaviour
     {
         if (other.TryGetComponent(out Enemy _))
         {
-            Exited?.Invoke();
+            _alarm.TurnOffSiren();
         }
     }
 }

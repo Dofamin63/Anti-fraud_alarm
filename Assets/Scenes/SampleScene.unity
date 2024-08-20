@@ -841,7 +841,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 230b5a31605143a4cbaad093619491fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speedChangeVolume: 3
+  _speedChangeVolume: 1
   _minVolume: 0
   _maxVolume: 1
   _door: {fileID: 545004085}
